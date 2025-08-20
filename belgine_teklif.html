@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+ <html lang="tr">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Belgin'e Özel Bir Şey...</title>
+     <style>
+         body {
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             height: 100vh;
+             margin: 0;
+             background: linear-gradient(135deg, #fdd835, #ff5722); /* Sıcak tonlarda gradyan */
+             background-size: 200% 200%;
+             animation: gradientAnimation 8s infinite alternate;
+             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+             overflow: hidden; /* Desenlerin taşmasını önler */
+         }
+         @keyframes gradientAnimation {
+             0% { background-position: 0% 50%; }
+             100% { background-position: 100% 50%; }
+         }
+         .container {
+             background-color: rgba(255, 255, 255, 0.9); /* Hafif şeffaf beyaz kutu */
+             padding: 40px;
+             border-radius: 15px;
+             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+             text-align: center;
+             z-index: 1; /* Desenlerin üzerinde kalmasını sağlar */
+         }
+         h1 {
+             color: #e64a19;
+             margin-bottom: 30px;
+             font-size: 2.5rem;
+         }
+         .buttons {
+             display: flex;
+             justify-content: center;
+             gap: 30px;
+             flex-wrap: wrap;
+         }
+         button {
+             padding: 15px 35px;
+             font-size: 1.2rem;
+             border: none;
+             border-radius: 50px;
+             cursor: pointer;
+             transition: all 0.3s ease-in-out;
+             font-weight: bold;
+             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+             position: relative; /* Hareket için gerekli */
+         }
+         #yesBtn {
+             background-color: #4CAF50;
+             color: white;
+             animation: pulse 1.5s infinite alternate;
+         }
+         #yesBtn:hover {
+             background-color: #45a049;
+         }
+         #noBtn {
+             background-color: #f44336;
+             color: white;
+         }
+         #noBtn:hover {
+             background-color: #d32f2f;
+         }
+         @keyframes pulse {
+             0% { transform: scale(1); }
+             100% { transform: scale(1.05); }
+         }
+         .message {
+             margin-top: 30px;
+             font-size: 1.5rem;
+             color: #2c3e50;
+             display: none;
+         }
+         /* Zarif desenler (noktalar) */
+         .pattern {
+             position: absolute;
+             border-radius: 50%;
+             background-color: rgba(255, 255, 255, 0.15);
+         }
+     </style>
+ </head>
+ <body>
+     <div class="container">
+         <h1>Belgin, benimle çıkar mısın?</h1>
+         <div class="buttons">
+             <button id="yesBtn">Evet</button>
+             <button id="noBtn">Hayır</button>
+         </div>
+         <p id="message" class="message"></p>
+     </div>
+ 
+     <script>
+         document.addEventListener('DOMContentLoaded', () => {
+             const yesBtn = document.getElementById('yesBtn');
+             const noBtn = document.getElementById('noBtn');
+             const message = document.getElementById('message');
+             const container = document.querySelector('.container');
+ 
+             // Rastgele позиция için fonksiyon
+             function getRandomPosition() {
+                 const containerRect = container.getBoundingClientRect();
+                 const btnRect = noBtn.getBoundingClientRect();
+                 const x = Math.random() * (containerRect.width - btnRect.width);
+                 const y = Math.random() * (containerRect.height - btnRect.height);
+                 return { x, y };
+             }
+ 
+             noBtn.addEventListener('mouseover', () => {
+                 const newPosition = getRandomPosition();
+                 noBtn.style.position = 'absolute';
+                 noBtn.style.left = `${newPosition.x}px`;
+                 noBtn.style.top = `${newPosition.y}px`;
+             });
+ 
+             yesBtn.addEventListener('click', () => {
+                 message.textContent = "Belgin, seni çok seviyorum.Beni çok mutlu ettin";
+                 message.style.display = 'block';
+                 yesBtn.style.display = 'none';
+                 noBtn.style.display = 'none';
+                 container.style.backgroundColor = 'rgba(255, 193, 7, 0.8)'; // Daha sıcak bir renk
+                 container.style.transition = 'background-color 1s ease-in-out';
+             });
+ 
+             // Arka plan desenleri oluştur
+             for (let i = 0; i < 50; i++) {
+                 const pattern = document.createElement('div');
+                 pattern.classList.add('pattern');
+                 const size = Math.random() * 30 + 10; // 10px ile 40px arasında boyut
+                 pattern.style.width = `${size}px`;
+                 pattern.style.height = `${size}px`;
+                 pattern.style.left = `${Math.random() * 100}vw`;
+                 pattern.style.top = `${Math.random() * 100}vh`;
+                 pattern.style.animation = `float ${Math.random() * 5 + 3}s infinite alternate`;
+                 document.body.appendChild(pattern);
+             }
+ 
+             // Desenler için hareket animasyonu
+             const styleSheet = document.createElement("style");
+             styleSheet.type = "text/css";
+             styleSheet.innerText = `@keyframes float {
+                 from { transform: translateY(0); opacity: 0.2; }
+                 to { transform: translateY(-30px); opacity: 0.8; }
+             }`;
+             document.head.appendChild(styleSheet);
+         });
+     </script>
+ </body>
+ </html>
